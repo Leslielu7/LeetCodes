@@ -17,22 +17,30 @@ class BSTIterator {
     private Stack<TreeNode> stack = new Stack<>();
     
     public BSTIterator(TreeNode root) {
-        findMostLeft(root);
-    }
-    
-    private void findMostLeft(TreeNode node){
-        while(node!=null){
-            stack.push(node);
-            node = node.left;
+        while (root != null){
+            stack.push(root);
+            root = root.left;
         }
     }
+    
     
     public int next() {
-        TreeNode node = stack.pop();
-        if(node.right !=null){
-            findMostLeft(node.right);
+        TreeNode curt = stack.peek();
+        TreeNode node = curt;
+        
+        if(node.right == null){
+            node = stack.pop();
+            while(!stack.isEmpty() && stack.peek().right == node){
+                node = stack.pop();
+            }
+        }else{
+            node = node.right;
+             while(node!=null){
+                 stack.push(node);
+                 node = node.left;
+             }   
         }
-        return node.val;
+        return curt.val;
     }
     
     public boolean hasNext() {
